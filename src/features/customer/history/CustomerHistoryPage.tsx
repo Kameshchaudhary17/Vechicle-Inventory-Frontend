@@ -1,48 +1,33 @@
-import { useEffect, useState } from "react";
 import { History, Receipt, Wallet, Calendar, Mail } from "lucide-react";
 import PageHeader from "../../../components/common/PageHeader";
 import StatCard from "../../../components/common/StatCard";
 import Badge from "../../../components/common/Badge";
-import { useAuth } from "../../../context/AuthContext";
-import { customerApi } from "../../../services/api/customerApi";
-import { useCustomerHistory } from "../../../hooks/queries/useReports";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../../../lib/axios";
+import type { ApiResult } from "../../../types/auth";
+import type { CustomerHistory } from "../../../types/reports";
+
+function useMyHistory() {
+  return useQuery({
+    queryKey: ["customer", "me", "history"],
+    queryFn: () => api.get<ApiResult<CustomerHistory>>("/customer/me/history").then((r) => r.data)
+  });
+}
 
 export default function CustomerHistoryPage() {
-  const { user } = useAuth();
-  const [customerId, setCustomerId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Customer role — find linked customer profile by searching their phone/email.
-    // (Simplified: backend resolves via linked UserId for engagement endpoints.
-    //  For history we need explicit id, so ask backend via a customer list search.)
-    (async () => {
-      if (!user) return;
-      try {
-        const email = user.email;
-        const res = await customerApi.list({ search: email, pageSize: 1 });
-        const match = res.data?.items[0];
-        setCustomerId(match?.id ?? null);
-      } catch { /* ignore */ }
-      finally { setLoading(false); }
-    })();
-  }, [user]);
-
-  const historyQuery = useCustomerHistory(customerId ?? undefined);
-  const h = historyQuery.data?.data;
+  const { data, isPending, isError } = useMyHistory();
+  const h = data?.data;
 
   return (
     <div className="space-y-6">
       <PageHeader eyebrow="History" title="Your Purchase History" subtitle="All your past invoices, balances and activity." />
 
-      {loading ? (
+      {isPending ? (
         <div className="card p-6 text-sm text-slate-500">Loading…</div>
-      ) : !customerId ? (
+      ) : isError || !h ? (
         <div className="card p-6 text-sm text-slate-500">
-          No customer profile linked yet. Staff will register you — or check back after your first purchase.
+          No purchase history found. Your invoices will appear here after your first purchase.
         </div>
-      ) : !h ? (
-        <div className="card p-6 text-sm text-slate-500">Loading your history…</div>
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">

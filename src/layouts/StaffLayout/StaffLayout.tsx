@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { LayoutDashboard, UserPlus, Receipt, BarChart3, MessageSquare } from "lucide-react";
+import { LayoutDashboard, UserPlus, Receipt, BarChart3, MessageSquare, Package } from "lucide-react";
 import Sidebar, { type NavGroup } from "../../components/common/Sidebar";
 import Topbar from "../../components/common/Topbar";
 import MobileDrawer from "../../components/common/MobileDrawer";
+import LowStockAlertModal from "../../components/common/LowStockAlertModal";
 
 const groups: NavGroup[] = [
   {
@@ -16,6 +17,7 @@ const groups: NavGroup[] = [
     items: [
       { to: "/staff/customers", label: "Customers", icon: UserPlus },
       { to: "/staff/sales-invoices", label: "Sales Invoices", icon: Receipt },
+      { to: "/staff/parts", label: "Parts", icon: Package },
       { to: "/staff/engagement", label: "Engagement", icon: MessageSquare }
     ]
   },
@@ -39,6 +41,7 @@ export default function StaffLayout() {
           <Outlet />
         </main>
       </div>
+      <LowStockAlertModal partsPath="/staff/parts" />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { LayoutDashboard, Users, Package, Truck, FileText, BarChart3, Tag, UserP
 import Sidebar, { type NavGroup } from "../../components/common/Sidebar";
 import Topbar from "../../components/common/Topbar";
 import MobileDrawer from "../../components/common/MobileDrawer";
+import LowStockAlertModal from "../../components/common/LowStockAlertModal";
 
 const groups: NavGroup[] = [
   {
@@ -47,6 +48,7 @@ export default function AdminLayout() {
           <Outlet />
         </main>
       </div>
+      <LowStockAlertModal />
     </div>
   );
 }

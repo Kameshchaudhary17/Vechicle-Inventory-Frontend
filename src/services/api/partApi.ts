@@ -40,6 +40,9 @@ export const partApi = {
   deleteImage: (id: string) =>
     api.delete<ApiResult<null>>(`/admin/parts/${id}/image`).then((r) => r.data),
 
-  staffList: (params: { search?: string; categoryId?: string; activeOnly?: boolean; page?: number; pageSize?: number }) =>
-    api.get<ApiResult<PagedResult<Part>>>("/staff/parts", { params }).then((r) => r.data)
+  staffList: (params: { search?: string; categoryId?: string; activeOnly?: boolean; lowStockOnly?: boolean; page?: number; pageSize?: number }) =>
+    api.get<ApiResult<PagedResult<Part>>>("/staff/parts", { params }).then((r) => r.data),
+
+  staffStats: () =>
+    api.get<ApiResult<PartStats>>("/staff/parts/stats").then((r) => r.data)
 };

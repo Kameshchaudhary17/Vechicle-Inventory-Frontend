@@ -26,6 +26,7 @@ import StaffDashboard from "../features/staff/dashboard/StaffDashboard";
 import StaffCustomersPage from "../features/staff/customers/StaffCustomersPage";
 import SalesInvoicePage from "../features/staff/sales/SalesInvoicePage";
 import StaffEngagementPage from "../features/staff/engagement/StaffEngagementPage";
+import StaffPartsPage from "../features/staff/parts/StaffPartsPage";
 
 import CustomerDashboard from "../features/customer/dashboard/CustomerDashboard";
 import CustomerAppointmentsPage from "../features/customer/appointments/CustomerAppointmentsPage";
@@ -70,6 +71,7 @@ export default function AppRoutes() {
           <Route index element={<StaffDashboard />} />
           <Route path="customers" element={<StaffCustomersPage />} />
           <Route path="sales-invoices" element={<SalesInvoicePage />} />
+          <Route path="parts" element={<StaffPartsPage />} />
           <Route path="engagement" element={<StaffEngagementPage />} />
           <Route path="reports" element={<CustomerInsightsPage />} />
         </Route>
